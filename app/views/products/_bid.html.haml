@@ -1,0 +1,4 @@
+=form_for [ @product, @product.auction, Bid.new ] do |f|
+  %strong
+    Current bid:
+    =@product.auction.current_bid
