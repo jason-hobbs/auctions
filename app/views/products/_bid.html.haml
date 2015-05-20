@@ -1,4 +1,5 @@
-=form_for [ @product, @product.auction, Bid.new ] do |f|
-  %strong
-    Current bid:
-    =@product.auction.current_bid
+-if @product.has_auction?
+  =form_for [ @product, @product.auction, Bid.new ] do |f|
+    %strong
+      Current bid:
+      =@product.auction.current_bid
