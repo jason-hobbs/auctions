@@ -4,15 +4,33 @@
   -else
     =form_for [ @product, @product.auction, Bid.new ] do |f|
       %p
-        -if @product.auction.top_bid.user_id == current_user.id
-          %strong
-            Current bid:
+        -if @product.auction.top_bid.present?
+          -if @product.auction.top_bid.user_id == current_user.id
+            %strong
+              Current bid:
+          -else
+            %strong
+              You were outbid:
         -else
-          %strong
-            You were outbid:
-        =@product.auction.current_bid
+        %strong
+          Current bid:
+        %strong
+          =@product.auction.current_bid
       %p
         Ends at: #{l(@product.auction.ends_at, format: :short)}
       %p
         =f.text_field :value
-        =f.button
+        =f.button class: "btn btn-primary"
+
+  :javascript
+
+    $(function() {
+      var user_id = "#{current_user.id}";
+      var auction_id = "#{@product.auction.id}";
+      var form = $("#new_bid");
+      var auctionSocket = new AuctionSocket(
+        user_id,
+        auction_id,
+        form
+      );
+    });
